@@ -1,27 +1,29 @@
-const { INTEGER, STRING, VIRTUAL, BOOLEAN } = require('sequelize');
+const { STRING, VIRTUAL, BOOLEAN } = require('sequelize');
 const sequelize = require('../database');
+const Participation = require('./Participation');
 
 const User = sequelize.define('users', {
   name: {
     type: STRING,
-    allownull: false,
+    allowNull: false,
   },
   lastName: {
     type: STRING,
-    allownull: false,
+    allowNull: false,
   },
   fullName: {
     type: VIRTUAL,
-    get: () => this.name + this.lastName,
-  },
-  percent: {
-    type: INTEGER,
-    allownull: false,
+    get() {
+      return `${this.name} ${this.lastName}`
+    },
   },
   deleted: {
     type: BOOLEAN,
     defaultValue: false,
   },
 });
+
+User.hasOne(Participation);
+Participation.belongsTo(User);
 
 module.exports = User;

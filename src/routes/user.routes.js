@@ -5,13 +5,18 @@ const {
   deleteUser,
   getUserById,
   updateUser,
-} = require('../controller/user.controller.js');
+} = require('../controller/user.controller');
+const {
+  createValidations,
+  getByIdValidations,
+  patchValidations,
+} = require('../middleware/user.middlewares');
 
 router
-  .post('/user', createUser)
-  .get('/users', getUsers)
-  .patch('/user/:id', updateUser)
-  .get('/user/:id', getUserById)
-  .delete('/user/:id', deleteUser);
+  .post('/', createValidations, createUser)
+  .get('/', getUsers)
+  .get('/:id', getByIdValidations, getUserById)
+  .patch('/:id', patchValidations, updateUser)
+  .delete('/:id', patchValidations, deleteUser);
 
 module.exports = router;

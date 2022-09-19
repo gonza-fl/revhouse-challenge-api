@@ -1,5 +1,4 @@
 require('dotenv/config');
-const Presentations = require('../../models/User')
 const express = require('express');
 const Router = require('express');
 const sequelize = require('../../database');
@@ -9,7 +8,7 @@ const morgan = require('morgan');
 const router = Router()
 const app = express();
 
-const { PORT, BASE_URL } = process.env;
+const { PORT, PREFIX_VERSION } = process.env;
 app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
@@ -17,15 +16,11 @@ app.head('/status', (_req, res) => {
   res.status(200).end();
 });
 
-const basePathParticipation = `${BASE_URL}/participations`;
-router.use(basePathParticipation, require('../../routes/user.routes'));
+const basePathUser = `${PREFIX_VERSION}/user`;
+
+router.use(basePathUser, require('../../routes/user.routes'));
 
 app.use('/api', router);
-app.use((_req, _res, next) => {
-  const err = new Error('Not Found');
-  err.code = 404;
-  next(err);
-});
 
 async function serverUp() {
     try {
