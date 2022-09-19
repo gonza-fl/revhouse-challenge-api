@@ -10,6 +10,7 @@ const createUser = async ({ percent: per, color: cl = 'gray', ...payload }) => {
   });
   return {
     ...userCreated.dataValues,
+    fullName: userCreated.fullName,
     participation: { color, percent },
   };
 };
